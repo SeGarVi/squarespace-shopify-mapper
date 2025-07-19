@@ -5,6 +5,7 @@ class SquarespaceProduct:
         description,
         price,
         stock,
+        categories
         tags,
         visible,
         hosted_image_urls
@@ -13,6 +14,7 @@ class SquarespaceProduct:
         self.description = description
         self.price = price
         self.stock = stock
+        self.categories = categories
         self.tags = tags
         self.visible = visible
         self.hosted_image_urls = []
@@ -34,6 +36,7 @@ class SquarespaceProductBuilder:
             'description': None,
             'price': None,
             'stock': None,
+            'categories': None,
             'tags': None,
             'visible': None,
             'hosted_image_urls': None
@@ -53,6 +56,10 @@ class SquarespaceProductBuilder:
 
     def with_stock(self, value):
         self._fields['stock'] = value
+        return self
+    
+    def with_categories(self, value):
+        self._fields['categories'] = value
         return self
 
     def with_tags(self, value):

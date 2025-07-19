@@ -14,6 +14,7 @@ class SquarespaceParser:
                         .with_description(row['Description']) \
                         .with_price(row['Price']) \
                         .with_stock(row['Stock']) \
+                        .with_categories(row['Categories']) \
                         .with_tags(row['Tags']) \
                         .with_visible(row['Visible'])
         return squarespace_product_builder.build()
