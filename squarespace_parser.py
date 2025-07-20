@@ -14,6 +14,7 @@ class SquarespaceParser:
                         .with_description(row['Description']) \
                         .with_price(row['Price']) \
                         .with_stock(row['Stock']) \
+                        .with_categories(row['Categories']) \
                         .with_tags(row['Tags']) \
                         .with_visible(row['Visible'])
         return squarespace_product_builder.build()
@@ -67,6 +68,7 @@ class SquarespaceParser:
     def create_product_with_variant(self, row):
         squarespace_product_builder = SquarespaceProductBuilder() \
                         .with_title(row['Title']) \
+                        .with_categories(row['Categories']) \
                         .with_description(row['Description']) \
                         .with_tags(row['Tags']) \
                         .with_visible(row['Visible'])
