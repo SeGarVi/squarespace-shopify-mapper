@@ -22,8 +22,8 @@ class SquarespaceToShopifyProductMapper:
             .with_type(shopify_product_type) \
             .with_tags(shopify_product_type) \
             .with_published(self.map_published()) \
-            .with_option_1_name(self.map_option_1_name()) \
-            .with_option_1_value(self.map_option_1_value()) \
+            .with_option_1_name(self.map_option_name_1()) \
+            .with_option_1_value(self.map_option_value_1()) \
             .with_variant_inventory_qty(self.map_variant_inventory_qty()) \
             .with_variant_price(self.map_variant_price()) \
             .with_image_src(self.squarespace_product.hosted_image_urls) \
@@ -43,27 +43,28 @@ class SquarespaceToShopifyProductMapper:
         return shopify_products
 
     def map_first_variant(self):
+        shopify_product_type = self.map_type()
         shopify_product = ShopifyProductBuilder() \
             .with_handle(self.map_handle()) \
             .with_title(self.map_title()) \
             .with_body(self.map_body()) \
-            .with_type(self.map_type()) \
-            .with_tags(self.squarespace_product.tags) \
+            .with_type(shopify_product_type) \
+            .with_tags(shopify_product_type) \
             .with_published(self.map_published()) \
-            .with_option_1_name(self.map_option_1_name(self.squarespace_product.variants[0])) \
-            .with_option_1_value(self.map_option_1_value(self.squarespace_product.variants[0])) \
+            .with_option_1_name(self.map_option_name_1(self.squarespace_product.variants[0])) \
+            .with_option_1_value(self.map_option_value_1(self.squarespace_product.variants[0])) \
             .with_variant_inventory_qty(self.map_variant_inventory_qty(self.squarespace_product.variants[0])) \
             .with_variant_price(self.map_variant_price(self.squarespace_product.variants[0])) \
             .with_image_src(self.squarespace_product.variants[0].hosted_image_urls) \
             .with_image_position(1) \
-            .with_product_category(self.calculate_category(self.squarespace_product.tags)) \
+            .with_product_category(self.calculate_category(shopify_product_type)) \
             .build()
         return shopify_product
     
     def map_variant(self, variant):
         shopify_product = ShopifyProductBuilder() \
             .with_handle(self.map_handle()) \
-            .with_option_1_value(self.map_option_1_value(variant)) \
+            .with_option_1_value(self.map_option_value_1(variant)) \
             .with_variant_inventory_qty(self.map_variant_inventory_qty(variant)) \
             .with_variant_price(self.map_variant_price(variant)) \
             .with_image_src(self.squarespace_product.variants[0].hosted_image_urls) \
@@ -82,14 +83,14 @@ class SquarespaceToShopifyProductMapper:
         else:
             return self.squarespace_product.stock
 
-    def map_option_1_value(self, variant=None):
+    def map_option_value_1(self, variant=None):
         if variant:
-            return variant.option_1_value
+            return variant.option_value_1
         return "Default Title"
 
-    def map_option_1_name(self, variant=None):
+    def map_option_name_1(self, variant=None):
         if variant:
-            return variant.option_1_name
+            return variant.option_name_1
         return "Title"
 
     def map_published(self):
