@@ -1,5 +1,6 @@
 import argparse
 from squarespace_parser import SquarespaceParser
+from squarespace_to_shopify_product_mapper import SquarespaceToShopifyProductMapper
 
 def main():
     print("test")
@@ -10,7 +11,11 @@ def main():
     args = parser.parse_args()
     squarespace_parser = SquarespaceParser(args.squarespace_products_file_path)
     products = squarespace_parser.parse()
-    print(str(products))
+    shopify_products = []
+    for product in products:
+        shopify_product_mapper = SquarespaceToShopifyProductMapper(product)
+        shopify_products.extend(shopify_product_mapper.map())
+    print(str(shopify_products))
 
 if __name__ == "__main__":
     main()

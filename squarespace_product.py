@@ -5,7 +5,7 @@ class SquarespaceProduct:
         description,
         price,
         stock,
-        categories
+        categories,
         tags,
         visible,
         hosted_image_urls
