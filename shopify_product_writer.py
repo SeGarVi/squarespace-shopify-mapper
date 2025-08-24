@@ -27,9 +27,12 @@ class ShopifyProductListWriter:
             .with_option_1_name(product.option_1_name) \
             .with_option_1_value(product.option_1_value) \
             .with_variant_inventory_qty(product.variant_inventory_qty) \
+            .with_variant_inventory_policy(product.variant_inventory_policy) \
+            .with_variant_fulfillment_service(product.variant_fulfillment_service) \
             .with_variant_price(product.variant_price) \
             .with_image_src(product.image_src) \
             .with_image_position(product.image_position) \
+            .with_status(product.status) \
             .build()
 
 class ShopifyProductRowBuilder:
@@ -45,9 +48,12 @@ class ShopifyProductRowBuilder:
             'option_1_name': None,
             'option_1_value': None,
             'variant_inventory_qty': None,
+            'variant_inventory_policy': None,
+            'variant_fulfillment_service': None,
             'variant_price': None,
             'image_src': None,
-            'image_position': None
+            'image_position': None,
+            'status': None
         }
 
     def with_handle(self, value):
@@ -89,6 +95,14 @@ class ShopifyProductRowBuilder:
     def with_variant_inventory_qty(self, value):
         self._fields['variant_inventory_qty'] = value
         return self
+    
+    def with_variant_inventory_policy(self, value):
+        self._fields['variant_inventory_policy'] = value
+        return self
+    
+    def with_variant_fulfillment_service(self, value):
+        self._fields['variant_fulfillment_service'] = value
+        return self
 
     def with_variant_price(self, value):
         self._fields['variant_price'] = value
@@ -100,6 +114,10 @@ class ShopifyProductRowBuilder:
 
     def with_image_position(self, value):
         self._fields['image_position'] = value
+        return self
+    
+    def with_status(self, value):
+        self._fields['status'] = value
         return self
 
     def build(self):
@@ -132,9 +150,12 @@ class ShopifyProductRow:
             option_1_name,
             option_1_value,
             variant_inventory_qty,
+            variant_inventory_policy,
+            variant_fulfillment_service,
             variant_price,
             image_src,
-            image_position):
+            image_position,
+            status):
         self.row = [""] * self.HEADER.__len__()
         self.row[0]= handle
         self.row[1] = title
@@ -146,9 +167,12 @@ class ShopifyProductRow:
         self.row[8] = option_1_name
         self.row[9] = option_1_value
         self.row[17] = variant_inventory_qty
+        self.row[18] = variant_inventory_policy
+        self.row[19] = variant_fulfillment_service
         self.row[20] = variant_price
         self.row[25] = image_src
         self.row[26] = image_position
+        self.row[50] = status
     
     def get_header(self):
         return self.HEADER
