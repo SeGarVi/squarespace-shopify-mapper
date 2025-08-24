@@ -2,6 +2,10 @@ import string_utils
 import re
 from shopify_product import ShopifyProductBuilder
 
+#TODO fill columns status (column BB)
+#     fill columns Fulfillment service (column W, justo antes de variant price) 
+#     fill columns Inventory policy (column V, justo antes de Fulfillment service)
+
 class SquarespaceToShopifyProductMapper:
     def __init__(self, squarespace_product):
         self.squarespace_product = squarespace_product
@@ -28,10 +32,13 @@ class SquarespaceToShopifyProductMapper:
             .with_option_1_name(self.map_option_name_1()) \
             .with_option_1_value(self.map_option_value_1()) \
             .with_variant_inventory_qty(self.map_variant_inventory_qty()) \
+            .with_variant_inventory_policy("deny") \
+            .with_variant_fulfillment_service("manual") \
             .with_variant_price(self.map_variant_price()) \
             .with_image_src(self.squarespace_product.hosted_image_urls[0]) \
             .with_image_position(1) \
             .with_product_category(self.calculate_category(shopify_product_type)) \
+            .with_status("active") \
             .build()
 
         shopify_products.append(shopify_product)
@@ -59,10 +66,13 @@ class SquarespaceToShopifyProductMapper:
             .with_option_1_name(self.map_option_name_1()) \
             .with_option_1_value(self.map_option_value_1()) \
             .with_variant_inventory_qty(self.map_variant_inventory_qty()) \
+            .with_variant_inventory_policy("deny") \
+            .with_variant_fulfillment_service("manual") \
             .with_variant_price(self.map_variant_price()) \
             .with_image_src(self.squarespace_product.hosted_image_urls[0]) \
             .with_image_position(1) \
             .with_product_category(self.calculate_category(shopify_product_type)) \
+            .with_status("active") \
             .build()
         return shopify_product
 
@@ -96,10 +106,13 @@ class SquarespaceToShopifyProductMapper:
             .with_option_1_name(self.map_option_name_1(self.squarespace_product.variants[0])) \
             .with_option_1_value(self.map_option_value_1(self.squarespace_product.variants[0])) \
             .with_variant_inventory_qty(self.map_variant_inventory_qty(self.squarespace_product.variants[0])) \
+            .with_variant_inventory_policy("deny") \
+            .with_variant_fulfillment_service("manual") \
             .with_variant_price(self.map_variant_price(self.squarespace_product.variants[0])) \
             .with_image_src(self.squarespace_product.variants[0].hosted_image_urls[0]) \
             .with_image_position(1) \
             .with_product_category(self.calculate_category(shopify_product_type)) \
+            .with_status("active") \
             .build()
         return shopify_product
     
@@ -108,6 +121,8 @@ class SquarespaceToShopifyProductMapper:
             .with_handle(self.map_handle()) \
             .with_option_1_value(self.map_option_value_1(variant)) \
             .with_variant_inventory_qty(self.map_variant_inventory_qty(variant)) \
+            .with_variant_inventory_policy("deny") \
+            .with_variant_fulfillment_service("manual") \
             .with_variant_price(self.map_variant_price(variant)) \
             .with_image_src(self.squarespace_product.variants[position-1].hosted_image_urls[0]) \
             .with_image_position(position) \
