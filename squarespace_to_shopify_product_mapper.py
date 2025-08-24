@@ -112,6 +112,7 @@ class SquarespaceToShopifyProductMapper:
             .with_image_src(self.squarespace_product.variants[0].hosted_image_urls[0]) \
             .with_image_position(1) \
             .with_product_category(self.calculate_category(shopify_product_type)) \
+            .with_variant_image(self.squarespace_product.variants[0].hosted_image_urls[0]) \
             .with_status("active") \
             .build()
         return shopify_product
@@ -126,6 +127,7 @@ class SquarespaceToShopifyProductMapper:
             .with_variant_price(self.map_variant_price(variant)) \
             .with_image_src(self.squarespace_product.variants[position-1].hosted_image_urls[0]) \
             .with_image_position(position) \
+            .with_variant_image(self.squarespace_product.variants[position-1].hosted_image_urls[0]) \
             .build()
         return shopify_product
 
