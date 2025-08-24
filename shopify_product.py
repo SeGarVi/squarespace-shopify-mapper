@@ -16,6 +16,7 @@ class ShopifyProduct:
             variant_price,
             image_src,
             image_position,
+            variant_image,
             status
     ):
         self.handle = handle
@@ -33,6 +34,7 @@ class ShopifyProduct:
         self.variant_price = variant_price
         self.image_src = image_src
         self.image_position = image_position
+        self.variant_image = variant_image
         self.status = status
 
     def __repr__(self):
@@ -56,6 +58,7 @@ class ShopifyProductBuilder:
             'variant_price': None,
             'image_src': None,
             'image_position': None,
+            'variant_image': None,
             'status': None
         }
 
@@ -118,7 +121,11 @@ class ShopifyProductBuilder:
     def with_image_position(self, value):
         self._fields['image_position'] = value
         return self
-    
+
+    def with_variant_image(self, value):
+        self._fields['variant_image'] = value
+        return self
+
     def with_status(self, value):
         self._fields['status'] = value
         return self
