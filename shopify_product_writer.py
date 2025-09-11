@@ -32,7 +32,6 @@ class ShopifyProductListWriter:
             .with_variant_price(product.variant_price) \
             .with_image_src(product.image_src) \
             .with_image_position(product.image_position) \
-            .with_variant_image(product.variant_image) \
             .with_status(product.status) \
             .build()
 
@@ -54,7 +53,6 @@ class ShopifyProductRowBuilder:
             'variant_price': None,
             'image_src': None,
             'image_position': None,
-            'variant_image': None,
             'status': None
         }
 
@@ -118,10 +116,6 @@ class ShopifyProductRowBuilder:
         self._fields['image_position'] = value
         return self
     
-    def with_variant_image(self, value):
-        self._fields['variant_image'] = value
-        return self
-
     def with_status(self, value):
         self._fields['status'] = value
         return self
@@ -141,7 +135,7 @@ class ShopifyProductRow:
         "Google Shopping / AdWords Grouping", "Google Shopping / AdWords Labels", "Google Shopping / Condition",
         "Google Shopping / Custom Product", "Google Shopping / Custom Label 0", "Google Shopping / Custom Label 1",
         "Google Shopping / Custom Label 2", "Google Shopping / Custom Label 3", "Google Shopping / Custom Label 4",
-        "Variant Image", "Variant Weight Unit", "Variant Tax Code", "Cost per item", "Price / International",
+        "Variant Weight Unit", "Variant Tax Code", "Cost per item", "Price / International",
         "Compare At Price / International", "Status"
     ]
 
@@ -161,7 +155,6 @@ class ShopifyProductRow:
             variant_price,
             image_src,
             image_position,
-            variant_image,
             status):
         self.row = [""] * self.HEADER.__len__()
         self.row[0]= handle
@@ -179,8 +172,7 @@ class ShopifyProductRow:
         self.row[20] = variant_price
         self.row[25] = image_src
         self.row[26] = image_position
-        self.row[44] = variant_image
-        self.row[50] = status
+        self.row[49] = status
     
     def get_header(self):
         return self.HEADER

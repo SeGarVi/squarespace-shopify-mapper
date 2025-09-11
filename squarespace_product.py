@@ -17,7 +17,7 @@ class SquarespaceProduct:
         self.categories = categories
         self.tags = tags
         self.visible = visible
-        self.hosted_image_urls = []
+        self.hosted_image_urls = hosted_image_urls
         self.variants = []
 
     def add_variant(self, variant):
@@ -69,6 +69,10 @@ class SquarespaceProductBuilder:
     def with_visible(self, value):
         self._fields['visible'] = value
         return self
+    
+    def with_hosted_image_urls(self, value):
+        self._fields['hosted_image_urls'] = value
+        return self
 
     def build(self):
         return SquarespaceProduct(**self._fields)
@@ -78,14 +82,12 @@ class SquarespaceProductVariant:
         option_name_1,
         option_value_1,
         price,
-        stock,
-        hosted_image_urls
+        stock
     ):
         self.option_name_1 = option_name_1
         self.option_value_1 = option_value_1
         self.price = price
         self.stock = stock
-        self.hosted_image_urls = []
 
 class SquarespaceVariantBuilder:
     def __init__(self):
@@ -93,8 +95,7 @@ class SquarespaceVariantBuilder:
             'option_name_1': None,
             'option_value_1': None,
             'price': None,
-            'stock': None,
-            'hosted_image_urls': None
+            'stock': None
         }
 
     def with_option_name_1(self, value):
