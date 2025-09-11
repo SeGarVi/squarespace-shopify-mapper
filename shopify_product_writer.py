@@ -26,6 +26,7 @@ class ShopifyProductListWriter:
             .with_published(product.published) \
             .with_option_1_name(product.option_1_name) \
             .with_option_1_value(product.option_1_value) \
+            .with_variant_grams(product.variant_grams) \
             .with_variant_inventory_tracker(product.variant_inventory_tracker) \
             .with_variant_inventory_qty(product.variant_inventory_qty) \
             .with_variant_inventory_policy(product.variant_inventory_policy) \
@@ -48,6 +49,7 @@ class ShopifyProductRowBuilder:
             'published': None,
             'option_1_name': None,
             'option_1_value': None,
+            'variant_grams': None,
             'variant_inventory_tracker': None,
             'variant_inventory_qty': None,
             'variant_inventory_policy': None,
@@ -92,6 +94,10 @@ class ShopifyProductRowBuilder:
 
     def with_option_1_value(self, value):
         self._fields['option_1_value'] = value
+        return self
+
+    def with_variant_grams(self, value):
+        self._fields['variant_grams'] = value
         return self
 
     def with_variant_inventory_tracker(self, value):
@@ -155,6 +161,7 @@ class ShopifyProductRow:
             published,
             option_1_name,
             option_1_value,
+            variant_grams,
             variant_inventory_tracker,
             variant_inventory_qty,
             variant_inventory_policy,
@@ -173,6 +180,7 @@ class ShopifyProductRow:
         self.row[7] = published
         self.row[8] = option_1_name
         self.row[9] = option_1_value
+        self.row[15] = variant_grams
         self.row[16] = variant_inventory_tracker
         self.row[17] = variant_inventory_qty
         self.row[18] = variant_inventory_policy
