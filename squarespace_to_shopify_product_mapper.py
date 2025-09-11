@@ -36,6 +36,9 @@ class SquarespaceToShopifyProductMapper:
             .with_published(self.map_published()) \
             .with_option_1_name(self.map_option_name_1()) \
             .with_option_1_value(self.map_option_value_1()) \
+            .with_option_1_value(self.map_option_value_1()) \
+            .with_variant_grams(self.map_variant_grams()) \
+            .with_variant_inventory_tracker("shopify") \
             .with_variant_inventory_qty(self.map_variant_inventory_qty()) \
             .with_variant_inventory_policy("deny") \
             .with_variant_fulfillment_service("manual") \
@@ -70,6 +73,8 @@ class SquarespaceToShopifyProductMapper:
             .with_published(self.map_published()) \
             .with_option_1_name(self.map_option_name_1()) \
             .with_option_1_value(self.map_option_value_1()) \
+            .with_variant_grams(self.map_variant_grams()) \
+            .with_variant_inventory_tracker("shopify") \
             .with_variant_inventory_qty(self.map_variant_inventory_qty()) \
             .with_variant_inventory_policy("deny") \
             .with_variant_fulfillment_service("manual") \
@@ -121,6 +126,8 @@ class SquarespaceToShopifyProductMapper:
             .with_published(self.map_published()) \
             .with_option_1_name(self.map_option_name_1(self.squarespace_product.variants[0])) \
             .with_option_1_value(self.map_option_value_1(self.squarespace_product.variants[0])) \
+            .with_variant_grams(self.map_variant_grams(self.squarespace_product.variants[0])) \
+            .with_variant_inventory_tracker("shopify") \
             .with_variant_inventory_qty(self.map_variant_inventory_qty(self.squarespace_product.variants[0])) \
             .with_variant_inventory_policy("deny") \
             .with_variant_fulfillment_service("manual") \
@@ -131,11 +138,13 @@ class SquarespaceToShopifyProductMapper:
             .with_status("active") \
             .build()
         return shopify_product
-    
+
     def map_variant(self, variant, position):
         shopify_product = ShopifyProductBuilder() \
             .with_handle(self.map_handle()) \
             .with_option_1_value(self.map_option_value_1(variant)) \
+            .with_variant_grams(self.map_variant_grams(variant)) \
+            .with_variant_inventory_tracker("shopify") \
             .with_variant_inventory_qty(self.map_variant_inventory_qty(variant)) \
             .with_variant_inventory_policy("deny") \
             .with_variant_fulfillment_service("manual") \
@@ -152,6 +161,11 @@ class SquarespaceToShopifyProductMapper:
             .with_image_position(position) \
             .build()
         return shopify_product
+
+    def map_variant_grams(self, variant=None):
+        return re.match(r"^(\d+)\s*(g|gr|gr\.)$", str(self.map_option_value_1(variant)).strip(), re.IGNORECASE).group(1) + ".0" \
+            if re.match(r"^(\d+)\s*(g|gr|gr\.)$", str(self.map_option_value_1(variant)).strip(), re.IGNORECASE) \
+            else ""
 
     def map_variant_price(self, variant=None):
         if variant:
