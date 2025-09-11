@@ -17,7 +17,12 @@ class SquarespaceToShopifyProductMapper:
             else:
                 return self.map_without_variants()
         else:
-            return self.map_with_variants()
+            if len(self.squarespace_product.variants) >= len(self.squarespace_product.hosted_image_urls):
+                # If there are more variants than images, we can't map images to variants properly
+                return self.map_with_more_variants_than_images()
+            else:
+                # If there are more images than variants, we can map images to variants properly
+                return self.map_with_more_images_than_variants()
 
     def map_without_variants(self):
         shopify_products = []
@@ -84,7 +89,7 @@ class SquarespaceToShopifyProductMapper:
             .build()
         return shopify_product
 
-    def map_with_variants(self):
+    def map_with_more_variants_than_images(self):
         shopify_products = []
         shopify_products.append(self.map_first_variant())
         position = 2
@@ -92,6 +97,17 @@ class SquarespaceToShopifyProductMapper:
             shopify_product = self.map_variant(variant, position)
             shopify_products.append(shopify_product)
             position += 1
+        return shopify_products
+
+    def map_with_more_images_than_variants(self):
+        shopify_products = []
+        shopify_products.append(self.map_first_variant())
+        for position in range(1, len(self.squarespace_product.hosted_image_urls)):
+            if position < len(self.squarespace_product.variants):
+                shopify_product = self.map_variant(self.squarespace_product.variants[position], position+1)
+            else:
+                shopify_product = self.map_just_image(position+1)
+            shopify_products.append(shopify_product)
         return shopify_products
 
     def map_first_variant(self):
@@ -109,10 +125,9 @@ class SquarespaceToShopifyProductMapper:
             .with_variant_inventory_policy("deny") \
             .with_variant_fulfillment_service("manual") \
             .with_variant_price(self.map_variant_price(self.squarespace_product.variants[0])) \
-            .with_image_src(self.squarespace_product.variants[0].hosted_image_urls[0]) \
+            .with_image_src(self.squarespace_product.hosted_image_urls[0]) \
             .with_image_position(1) \
             .with_product_category(self.calculate_category(shopify_product_type)) \
-            .with_variant_image(self.squarespace_product.variants[0].hosted_image_urls[0]) \
             .with_status("active") \
             .build()
         return shopify_product
@@ -125,9 +140,16 @@ class SquarespaceToShopifyProductMapper:
             .with_variant_inventory_policy("deny") \
             .with_variant_fulfillment_service("manual") \
             .with_variant_price(self.map_variant_price(variant)) \
-            .with_image_src(self.squarespace_product.variants[position-1].hosted_image_urls[0]) \
+            .with_image_src(self.squarespace_product.hosted_image_urls[position-1] if position-1 < len(self.squarespace_product.hosted_image_urls) else None) \
             .with_image_position(position) \
-            .with_variant_image(self.squarespace_product.variants[position-1].hosted_image_urls[0]) \
+            .build()
+        return shopify_product
+    
+    def map_just_image(self, position):
+        shopify_product = ShopifyProductBuilder() \
+            .with_handle(self.map_handle()) \
+            .with_image_src(self.squarespace_product.hosted_image_urls[position-1] if position-1 < len(self.squarespace_product.hosted_image_urls) else None) \
+            .with_image_position(position) \
             .build()
         return shopify_product
 
@@ -154,7 +176,7 @@ class SquarespaceToShopifyProductMapper:
 
     def map_published(self):
         is_visible = self.squarespace_product.visible
-        return "True" if is_visible == "Yes" else "False" if is_visible == "No" else ""
+        return "true" if is_visible == "Yes" else "false" if is_visible == "No" else ""
 
     def map_handle(self):
         return string_utils.remove_accents(self.squarespace_product.title).replace(" ", "-").lower()
