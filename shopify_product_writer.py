@@ -26,6 +26,7 @@ class ShopifyProductListWriter:
             .with_published(product.published) \
             .with_option_1_name(product.option_1_name) \
             .with_option_1_value(product.option_1_value) \
+            .with_variant_inventory_tracker(product.variant_inventory_tracker) \
             .with_variant_inventory_qty(product.variant_inventory_qty) \
             .with_variant_inventory_policy(product.variant_inventory_policy) \
             .with_variant_fulfillment_service(product.variant_fulfillment_service) \
@@ -47,6 +48,7 @@ class ShopifyProductRowBuilder:
             'published': None,
             'option_1_name': None,
             'option_1_value': None,
+            'variant_inventory_tracker': None,
             'variant_inventory_qty': None,
             'variant_inventory_policy': None,
             'variant_fulfillment_service': None,
@@ -90,6 +92,10 @@ class ShopifyProductRowBuilder:
 
     def with_option_1_value(self, value):
         self._fields['option_1_value'] = value
+        return self
+
+    def with_variant_inventory_tracker(self, value):
+        self._fields['variant_inventory_tracker'] = value
         return self
 
     def with_variant_inventory_qty(self, value):
@@ -149,6 +155,7 @@ class ShopifyProductRow:
             published,
             option_1_name,
             option_1_value,
+            variant_inventory_tracker,
             variant_inventory_qty,
             variant_inventory_policy,
             variant_fulfillment_service,
@@ -166,6 +173,7 @@ class ShopifyProductRow:
         self.row[7] = published
         self.row[8] = option_1_name
         self.row[9] = option_1_value
+        self.row[16] = variant_inventory_tracker
         self.row[17] = variant_inventory_qty
         self.row[18] = variant_inventory_policy
         self.row[19] = variant_fulfillment_service

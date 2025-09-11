@@ -10,6 +10,7 @@ class ShopifyProduct:
             published,
             option_1_name,
             option_1_value,
+            variant_inventory_tracker,
             variant_inventory_qty,
             variant_inventory_policy,
             variant_fulfillment_service,
@@ -27,6 +28,7 @@ class ShopifyProduct:
         self.published = published
         self.option_1_name = option_1_name
         self.option_1_value = option_1_value
+        self.variant_inventory_tracker = variant_inventory_tracker
         self.variant_inventory_qty = variant_inventory_qty
         self.variant_inventory_policy = variant_inventory_policy
         self.variant_fulfillment_service = variant_fulfillment_service
@@ -52,6 +54,7 @@ class ShopifyProductBuilder:
             'option_1_value': None,
             'variant_inventory_policy': None,
             'variant_fulfillment_service': None,
+            'variant_inventory_tracker': None,
             'variant_inventory_qty': None,
             'variant_price': None,
             'image_src': None,
@@ -93,6 +96,10 @@ class ShopifyProductBuilder:
 
     def with_option_1_value(self, value):
         self._fields['option_1_value'] = value
+        return self
+
+    def with_variant_inventory_tracker(self, value):
+        self._fields['variant_inventory_tracker'] = value
         return self
 
     def with_variant_inventory_qty(self, value):
